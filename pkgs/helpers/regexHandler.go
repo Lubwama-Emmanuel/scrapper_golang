@@ -10,7 +10,7 @@ func GetSubString(s string, index []int) string {
 }
 
 func RegExp(link string) string {
-	pattern := regexp.MustCompile(`https://www.mukwano.com/[a-zA-Z]*/`)
+	pattern := regexp.MustCompile(`[a-z]*@[a-z]*\.(com|org)`)
 	matchedIndex := pattern.FindStringIndex(link)
 	return GetSubString(link, matchedIndex)
 }
