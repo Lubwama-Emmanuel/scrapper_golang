@@ -2,8 +2,9 @@ package errorHandler
 
 import "log"
 
-func HanderError(err error) {
+func HanderError(m string, err error) {
 	if err != nil {
 		log.Fatal(err)
 	}
+	return
 }
