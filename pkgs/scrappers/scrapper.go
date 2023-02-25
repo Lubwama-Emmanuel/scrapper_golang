@@ -1,13 +1,41 @@
 package scrapper
 
 import (
+	"bufio"
 	"fmt"
+	"log"
 	"net/http"
+	"os"
 
 	"github.com/Lubwama-Emmanuel/scrapper_golang/pkgs/errorHandler"
 	regexHandler "github.com/Lubwama-Emmanuel/scrapper_golang/pkgs/helpers"
 	"github.com/PuerkitoBio/goquery"
 )
+
+func ReadFromFile() {
+	// content, err := os.ReadFile("uploadedFiles/company_list-4096951222.txt")
+	// errorHandler.HanderError("Error reading file", err)
+
+	// fmt.Println(string(content))
+	var companies []string
+	f, err := os.Open("uploadedFiles/company_list-4096951222.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer f.Close()
+
+	scanner := bufio.NewScanner(f)
+
+	for scanner.Scan() {
+		companies = append(companies, scanner.Text())
+	}
+
+	if err := scanner.Err(); err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(companies)
+}
 
 func GoogleScrapper(name string) (string, string) {
 	url := fmt.Sprintf("https://www.google.com/search?q=%s", name)

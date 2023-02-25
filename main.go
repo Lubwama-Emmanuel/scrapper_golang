@@ -12,35 +12,33 @@ import (
 var companyName string
 
 func uploadFile(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Uploading file from here")
+	fmt.Println("Uploading a file endpoint")
 
+	// 1. parse input, type multipart/form-data
 	r.ParseMultipartForm(10 << 20)
 
+	// 2. retrieve file from posted form-data
 	file, handler, err := r.FormFile("myFile")
-	errorHandler.HanderError("Error retriving File", err)
+	errorHandler.HanderError("Error retrieving file form form-data", err)
 
 	defer file.Close()
 
-	fmt.Printf("Uploaded File: %+v\n", handler.Filename)
+	fmt.Printf("Uploaded file: %+v\n", handler.Filename)
 	fmt.Printf("File Size: %+v\n", handler.Size)
 	fmt.Printf("MIME Header: %+v\n", handler.Header)
 
-	tempFile, err := ioutil.TempFile("temp-images", "upload-*.png")
-	if err != nil {
-		fmt.Println(err)
-	}
+	// 3. Write temporary file on our server
+	tempFile, err := ioutil.TempFile("uploadedFiles", "company_list-*.txt")
+	errorHandler.HanderError("Error loading tempFile", err)
+
 	defer tempFile.Close()
 
-	// read all of the contents of our uploaded file into a
-	// byte array
 	fileBytes, err := ioutil.ReadAll(file)
-	if err != nil {
-		fmt.Println(err)
-	}
-	// write this byte array to our temporary file
+	errorHandler.HanderError("Error reading fileBytes", err)
+
 	tempFile.Write(fileBytes)
-	// return that we have successfully uploaded our file!
-	fmt.Fprintf(w, "Successfully Uploaded File\n")
+	// 4. Return whether or not this has been successfull
+	fmt.Fprintf(w, "Successfully uploaded the file")
 }
 
 func routes() {
@@ -49,8 +47,8 @@ func routes() {
 }
 func main() {
 	companyName = "mukwano"
-	routes()
 	companyLink, compName := scrapper.GoogleScrapper(companyName)
 	scrapper.CompanyScrapper(companyLink, compName)
 	// scrapper.ContactUsScrapper(contactLink)
+	// scrapper.ReadFromFile()
 }
