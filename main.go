@@ -46,9 +46,16 @@ func routes() {
 	http.ListenAndServe(":8000", nil)
 }
 func main() {
-	companyName = "mukwano"
-	companyLink, compName := scrapper.GoogleScrapper(companyName)
-	scrapper.CompanyScrapper(companyLink, compName)
+	collectionMap := make(map[string]string)
+	// companyName = "mukwano"
+	// companyLink, compName := scrapper.GoogleScrapper(companyName)
+	// scrapper.CompanyScrapper(companyLink, compName)
 	// scrapper.ContactUsScrapper(contactLink)
-	// scrapper.ReadFromFile()
+	companies := scrapper.ReadFromFile()
+	for _, company := range companies {
+		companyLink := scrapper.GoogleScrapper(company)
+		email, name := scrapper.CompanyScrapper(companyLink, company)
+		collectionMap[name] = email
+	}
+	fmt.Println("Here it is", collectionMap)
 }

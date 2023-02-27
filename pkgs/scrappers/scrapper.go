@@ -12,7 +12,7 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
-func ReadFromFile() {
+func ReadFromFile() []string {
 	// content, err := os.ReadFile("uploadedFiles/company_list-4096951222.txt")
 	// errorHandler.HanderError("Error reading file", err)
 
@@ -34,10 +34,11 @@ func ReadFromFile() {
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(companies)
+	// fmt.Println(companies)
+	return companies
 }
 
-func GoogleScrapper(name string) (string, string) {
+func GoogleScrapper(name string) string {
 	url := fmt.Sprintf("https://www.google.com/search?q=%s", name)
 
 	resp, err := http.Get(url)
@@ -65,12 +66,12 @@ func GoogleScrapper(name string) (string, string) {
 		}
 		companyLink = answer
 	}
-	return companyLink, name
+	return companyLink
 }
 
 // Scraps the company website for their email or contact-us page
 func CompanyScrapper(link string, name string) (string, string) {
-	collection := make(map[string]string)
+	// collection := make(map[string]string)
 	resp, err := http.Get(link)
 	errorHandler.HanderError("Error getting hitting company link", err)
 
@@ -96,8 +97,8 @@ func CompanyScrapper(link string, name string) (string, string) {
 		email = answer
 	}
 	// fmt.Println(name, email)
-	collection[name] = email
-	fmt.Println(collection)
+	// collection[name] = email
+	// fmt.Println(collection)
 	return email, name
 }
 
