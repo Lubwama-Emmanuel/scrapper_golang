@@ -45,6 +45,7 @@ func routes() {
 	http.HandleFunc("/uploadFile", uploadFile)
 	http.ListenAndServe(":8000", nil)
 }
+
 func main() {
 	// routes()
 	collectionMap := make(map[string]string)

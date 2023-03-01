@@ -36,5 +36,4 @@ func TestCompanyScrapper(t *testing.T) {
 			t.Fatalf("Expected: Email: %v Name: %v, Got: Email: %v Name: %v", tc.companyEmail, tc.companyName, email, name)
 		}
 	}
-
 }

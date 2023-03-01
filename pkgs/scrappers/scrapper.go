@@ -70,7 +70,7 @@ func GoogleScrapper(name string) string {
 }
 
 // Scraps the company website for their email or contact-us page
-func CompanyScrapper(link string, name string) (string, string) {
+func CompanyScrapper(link, name string) (string, string) {
 	fmt.Println("gotten link", link)
 	resp, err := http.Get(link)
 	errorHandler.HanderError("Error getting hitting company link", err)
@@ -116,7 +116,6 @@ func ContactUsScrapper(link string) {
 
 		links = append(links, link)
 		fmt.Println(link)
-
 	})
 
 	var email string
