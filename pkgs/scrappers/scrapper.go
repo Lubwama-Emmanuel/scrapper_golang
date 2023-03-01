@@ -38,6 +38,7 @@ func ReadFromFile() []string {
 	return companies
 }
 
+// Func takes in name of a company and makes a google search the returns link to company website
 func GoogleScrapper(name string) string {
 	url := fmt.Sprintf("https://www.google.com/search?q=%s", name)
 
@@ -60,8 +61,8 @@ func GoogleScrapper(name string) string {
 
 	var companyLink string
 	for _, link := range links {
-		answer := regexHandler.MatchCompanyLink(link)
-		if answer == "An empty string" {
+		answer := regexHandler.MatchCompanyLink(link, name)
+		if answer == "empty" {
 			continue
 		}
 		companyLink = answer
@@ -91,11 +92,12 @@ func CompanyScrapper(link string, name string) (string, string) {
 	var email string
 	for _, link := range links {
 		answer := regexHandler.MatchEmail(link)
-		if answer == "An empty string" {
+		if answer == "empty" {
 			continue
 		}
 		email = answer
 	}
+	fmt.Println("Here is the email", email)
 	// fmt.Println(name, email)
 	// collection[name] = email
 	// fmt.Println(collection)
@@ -125,7 +127,7 @@ func ContactUsScrapper(link string) {
 	for _, link := range links {
 		answer := regexHandler.MatchEmail(link)
 
-		if answer == "An empty string" {
+		if answer != "nil" {
 			continue
 		}
 		email = answer

@@ -1,18 +1,20 @@
 package regexHandler
 
 import (
+	"fmt"
 	"regexp"
 )
 
 func GetSubString(s string, index []int) string {
 	if index == nil {
-		return ("An empty string")
+		return "empty"
 	}
 	return s[index[0]:index[1]]
 }
 
-func MatchCompanyLink(link string) string {
-	pattern := regexp.MustCompile("https://www.mukwano.com/")
+func MatchCompanyLink(link, name string) string {
+	url := fmt.Sprintf(`https:\/\/www\.%s\.(com|org)\/`, name)
+	pattern := regexp.MustCompile(url)
 	matchedIndex := pattern.FindStringIndex(link)
 	return GetSubString(link, matchedIndex)
 }

@@ -51,11 +51,28 @@ func main() {
 	// companyLink, compName := scrapper.GoogleScrapper(companyName)
 	// scrapper.CompanyScrapper(companyLink, compName)
 	// scrapper.ContactUsScrapper(contactLink)
+
+	// emails := []string{
+	// 	"mukwano@email",
+	// 	"creec@email",
+	// }
+
+	// companies := []string{
+	// 	"mukwano",
+	// 	"creec",
+	// }
+
+	// for _, company := range companies {
+	// 	for _, email := range emails {
+	// 		collectionMap[company] = email
+	// 	}
+	// }
+
 	companies := scrapper.ReadFromFile()
 	for _, company := range companies {
 		companyLink := scrapper.GoogleScrapper(company)
 		email, name := scrapper.CompanyScrapper(companyLink, company)
 		collectionMap[name] = email
 	}
-	fmt.Println("Here it is", collectionMap)
+	// fmt.Println("Here it is", collectionMap)
 }
