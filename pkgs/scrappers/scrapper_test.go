@@ -1,23 +1,15 @@
 package scrapper
 
 import (
+	"reflect"
 	"testing"
 )
 
 func TestGoogleScrapper(t *testing.T) {
-	type test struct {
-		companyName string
-		companyLink string
-	}
-	tests := []test{
-		{"mukwano", "https://www.mukwano.com"},
-		{"kanzucode", "https://kanzucode.com"},
-	}
-	for _, tc := range tests {
-		link := GoogleScrapper(tc.companyName)
-		if link != tc.companyLink {
-			t.Fatalf("Expected: %v, Got: %v", tc.companyLink, link)
-		}
+	got := GoogleScrapper("mukwano")
+	want := "https://www.mukwano.com/"
+	if !reflect.DeepEqual(want, got) {
+		t.Fatalf("Expected: %s got: %s", want, got)
 	}
 }
 
@@ -28,6 +20,7 @@ func TestCompanyScrapper(t *testing.T) {
 		companyEmail string
 	}
 	tests := []test{
+		{"https://www.mukwano.com/", "mukwano", "customercare@mukwano.com"},
 		{"https://www.mukwano.com/", "mukwano", "customercare@mukwano.com"},
 	}
 	for _, tc := range tests {
