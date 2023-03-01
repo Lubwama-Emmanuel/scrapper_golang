@@ -56,7 +56,6 @@ func GoogleScrapper(name string) string {
 		link, _ := s.Attr("href")
 
 		links = append(links, link)
-		// fmt.Println(link)
 	})
 
 	var companyLink string
@@ -72,7 +71,7 @@ func GoogleScrapper(name string) string {
 
 // Scraps the company website for their email or contact-us page
 func CompanyScrapper(link string, name string) (string, string) {
-	// collection := make(map[string]string)
+	fmt.Println("gotten link", link)
 	resp, err := http.Get(link)
 	errorHandler.HanderError("Error getting hitting company link", err)
 
@@ -98,9 +97,6 @@ func CompanyScrapper(link string, name string) (string, string) {
 		email = answer
 	}
 	fmt.Println("Here is the email", email)
-	// fmt.Println(name, email)
-	// collection[name] = email
-	// fmt.Println(collection)
 	return email, name
 }
 

@@ -4,13 +4,13 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strings"
 
 	"github.com/Lubwama-Emmanuel/scrapper_golang/pkgs/errorHandler"
 	scrapper "github.com/Lubwama-Emmanuel/scrapper_golang/pkgs/scrappers"
 )
 
-var companyName string
-
+// Function for uploading a file
 func uploadFile(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Uploading a file endpoint")
 
@@ -46,33 +46,17 @@ func routes() {
 	http.ListenAndServe(":8000", nil)
 }
 func main() {
+	// routes()
 	collectionMap := make(map[string]string)
-	// companyName = "mukwano"
-	// companyLink, compName := scrapper.GoogleScrapper(companyName)
-	// scrapper.CompanyScrapper(companyLink, compName)
-	// scrapper.ContactUsScrapper(contactLink)
-
-	// emails := []string{
-	// 	"mukwano@email",
-	// 	"creec@email",
-	// }
-
-	// companies := []string{
-	// 	"mukwano",
-	// 	"creec",
-	// }
-
-	// for _, company := range companies {
-	// 	for _, email := range emails {
-	// 		collectionMap[company] = email
-	// 	}
-	// }
-
 	companies := scrapper.ReadFromFile()
+
 	for _, company := range companies {
+		if strings.Contains(company, " ") {
+			company = strings.ReplaceAll(company, " ", "")
+		}
 		companyLink := scrapper.GoogleScrapper(company)
 		email, name := scrapper.CompanyScrapper(companyLink, company)
 		collectionMap[name] = email
 	}
-	// fmt.Println("Here it is", collectionMap)
+	fmt.Println("Here it is", collectionMap)
 }
