@@ -25,6 +25,9 @@ jobs:
   # Build 
   - name: Run Build
     run: go build
+  # Run linter
+  -name: Run linter on code
+    run: golangci-lint run
   # Run tests
   - name: Testing
-    run: got
+    run: gotestsum --format testname

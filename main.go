@@ -1,10 +1,10 @@
 package main
 
 import (
-	"fmt"
 	"strings"
 
 	scrapper "github.com/Lubwama-Emmanuel/scrapper_golang/pkgs/scrappers"
+	"github.com/sirupsen/logrus"
 )
 
 func main() {
@@ -19,5 +19,6 @@ func main() {
 		email, name := scrapper.CompanyScrapper(companyLink, company)
 		collectionMap[name] = email
 	}
-	fmt.Println("Here it is", collectionMap)
+
+	logrus.Info(collectionMap)
 }
