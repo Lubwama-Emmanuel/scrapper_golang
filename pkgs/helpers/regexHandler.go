@@ -30,12 +30,3 @@ func MatchEmail(link string) string {
 
 	return GetSubString(link, matchedIndex)
 }
-
-// Matches valid contact-us link.
-func MatchContactUs(link, name string) string {
-	url := fmt.Sprintf(`(https?:\/\/)(www\.)?(%v\.)+[a-z]{2,}\/([a-z]+)?contact([a-z|-]+)?\/`, name)
-	pattern := regexp.MustCompile(url)
-	matchedIndex := pattern.FindStringIndex(link)
-
-	return GetSubString(link, matchedIndex)
-}
