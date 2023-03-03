@@ -3,12 +3,17 @@ package regexhandler
 import (
 	"fmt"
 	"regexp"
+
+	"github.com/sirupsen/logrus"
 )
 
 // Matches received index and returns the string.
 func GetSubString(s string, index []int) string {
-	if index == nil {
+	logrus.Info("received index", len(index))
+	if len(index) == 0 {
 		return "empty"
+	} else if len(index) > 2 {
+		logrus.Error("Index is out of Range")
 	}
 
 	return s[index[0]:index[1]]
