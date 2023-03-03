@@ -3,20 +3,22 @@ package scrapper
 import (
 	"bufio"
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 
 	errorhandler "github.com/Lubwama-Emmanuel/scrapper_golang/pkgs/errorHandler"
 	regexhandler "github.com/Lubwama-Emmanuel/scrapper_golang/pkgs/helpers"
 	"github.com/PuerkitoBio/goquery"
+	logrus "github.com/sirupsen/logrus"
 )
 
+// Read company names from file.
 func ReadFromFile() []string {
 	var companies []string
+
 	f, err := os.Open("uploadedFiles/company_list-4096951222.txt")
 	if err != nil {
-		log.Fatal(err)
+		errorhandler.HanderError("Failed to open file", err)
 	}
 
 	defer f.Close()
@@ -28,7 +30,7 @@ func ReadFromFile() []string {
 	}
 
 	if err := scanner.Err(); err != nil {
-		log.Fatal(err)
+		logrus.Fatal(err)
 	}
 
 	return companies
@@ -38,7 +40,7 @@ func ReadFromFile() []string {
 func GoogleScrapper(name string) string {
 	url := fmt.Sprintf("https://www.google.com/search?q=%s", name)
 
-	resp, err := http.Get(url)
+	resp, err := http.Get(url) //nolint
 	errorhandler.HanderError("Error hitting url", err)
 
 	defer resp.Body.Close()
@@ -55,6 +57,7 @@ func GoogleScrapper(name string) string {
 	})
 
 	var companyLink string
+
 	for i := range links {
 		answer := regexhandler.MatchCompanyLink(links[i], name)
 		if answer == "empty" {
@@ -66,9 +69,9 @@ func GoogleScrapper(name string) string {
 	return companyLink
 }
 
-// Scraps the company website for their email or contact-us page.
+// Scraps the company website for their email.
 func CompanyScrapper(link, name string) (string, string) {
-	resp, err := http.Get(link)
+	resp, err := http.Get(link) //nolint
 	errorhandler.HanderError("Error getting hitting company link", err)
 
 	defer resp.Body.Close()
@@ -81,10 +84,10 @@ func CompanyScrapper(link, name string) (string, string) {
 		link, _ := s.Attr("href")
 
 		links = append(links, link)
-
 	})
 
 	var email string
+
 	for i := range links {
 		answer := regexhandler.MatchEmail(links[i])
 		if answer == "empty" {
@@ -94,33 +97,4 @@ func CompanyScrapper(link, name string) (string, string) {
 	}
 
 	return email, name
-}
-
-func ContactUsScrapper(link string) {
-	resp, err := http.Get(link)
-	errorhandler.HanderError("Error retrieving File", err)
-
-	defer resp.Body.Close()
-
-	doc, err := goquery.NewDocumentFromReader(resp.Body)
-	errorhandler.HanderError("Error retrieving File", err)
-
-	var links []string
-	doc.Find("a").Each(func(i int, s *goquery.Selection) {
-		link, _ := s.Attr("href")
-
-		links = append(links, link)
-		fmt.Println(link)
-	})
-
-	var email string
-	for i := range links {
-		answer := regexhandler.MatchEmail(links[i])
-
-		if answer != "nil" {
-			continue
-		}
-		email = answer
-		fmt.Println("here is the email", email)
-	}
 }
