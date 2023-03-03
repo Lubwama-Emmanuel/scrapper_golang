@@ -6,6 +6,4 @@ func HanderError(m string, err error) {
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	return
 }
