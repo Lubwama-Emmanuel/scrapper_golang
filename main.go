@@ -11,12 +11,12 @@ func main() {
 	collectionMap := make(map[string]string)
 	companies := scrapper.ReadFromFile()
 
-	for _, company := range companies {
-		if strings.Contains(company, " ") {
-			company = strings.ReplaceAll(company, " ", "")
+	for i := range companies {
+		if strings.Contains(companies[i], " ") {
+			companies[i] = strings.ReplaceAll(companies[i], " ", "")
 		}
-		companyLink := scrapper.GoogleScrapper(company)
-		email, name := scrapper.CompanyScrapper(companyLink, company)
+		companyLink := scrapper.GoogleScrapper(companies[i])
+		email, name := scrapper.ScrapeCompanyWebsite(companyLink, companies[i])
 		collectionMap[name] = email
 	}
 
