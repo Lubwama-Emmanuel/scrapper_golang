@@ -1,5 +1,4 @@
 codebits
 sunbird
-sinbus
 picfare
 mukwano
