@@ -9,7 +9,7 @@ import (
 	errorhandler "github.com/Lubwama-Emmanuel/scrapper_golang/pkgs/errorHandler"
 	regexhandler "github.com/Lubwama-Emmanuel/scrapper_golang/pkgs/helpers"
 	"github.com/PuerkitoBio/goquery"
-	logrus "github.com/sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 )
 
 // Read company names from file.
@@ -30,7 +30,7 @@ func ReadFromFile() []string {
 	}
 
 	if err := scanner.Err(); err != nil {
-		logrus.Fatal(err)
+		log.Error(err)
 	}
 
 	return companies
@@ -54,6 +54,7 @@ func GoogleScrapper(name string) string {
 		link, _ := s.Attr("href")
 
 		links = append(links, link)
+
 	})
 
 	var companyLink string
@@ -70,7 +71,7 @@ func GoogleScrapper(name string) string {
 }
 
 // Scraps the company website for their email.
-func CompanyScrapper(link, name string) (string, string) {
+func ScrapeCompanyWebsite(link, name string) (string, string) {
 	resp, err := http.Get(link) //nolint
 	errorhandler.HanderError("Error getting hitting company link", err)
 
@@ -84,6 +85,7 @@ func CompanyScrapper(link, name string) (string, string) {
 		link, _ := s.Attr("href")
 
 		links = append(links, link)
+		log.Info(link)
 	})
 
 	var email string
