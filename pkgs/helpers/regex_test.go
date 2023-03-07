@@ -20,11 +20,14 @@ func TestMatchCompanyLink(t *testing.T) {
 	}
 
 	for i := range tests {
-		got := regexhandler.MatchCompanyLink(tests[i].link, tests[i].companyName)
+		t.Run(tests[i].testName, func(t *testing.T) {
 
-		if got != tests[i].companyLink {
-			t.Fatalf("%v: Expected: %v But Got: %v", tests[i].testName, tests[i].companyLink, got)
-		}
+			got := regexhandler.MatchCompanyLink(tests[i].link, tests[i].companyName)
+
+			if got != tests[i].companyLink {
+				t.Fatalf("%v: Expected: %v But Got: %v", tests[i].testName, tests[i].companyLink, got)
+			}
+		})
 	}
 }
 
@@ -41,10 +44,13 @@ func TestMatchEmail(t *testing.T) {
 	}
 
 	for i := range tests {
-		got := regexhandler.MatchEmail(tests[i].link)
+		t.Run(tests[i].testName, func(t *testing.T) {
 
-		if got != tests[i].want {
-			t.Fatalf("%v: Expected: %v But Got: %v", tests[i].testName, tests[i].want, got)
-		}
+			got := regexhandler.MatchEmail(tests[i].link)
+
+			if got != tests[i].want {
+				t.Fatalf("%v: Expected: %v But Got: %v", tests[i].testName, tests[i].want, got)
+			}
+		})
 	}
 }
