@@ -19,11 +19,14 @@ func TestGoogleScrapper(t *testing.T) {
 	}
 
 	for i := range tests {
-		link := scrapper.GoogleScrapper(tests[i].companyName)
+		t.Run(tests[i].testName, func(t *testing.T) {
 
-		if link != tests[i].companyLink {
-			t.Fatalf("%v: Expected: %v But Got: %v", tests[i].testName, tests[i].companyLink, link)
-		}
+			link := scrapper.GoogleScrapper(tests[i].companyName)
+
+			if link != tests[i].companyLink {
+				t.Fatalf("%v: Expected: %v But Got: %v", tests[i].testName, tests[i].companyLink, link)
+			}
+		})
 	}
 }
 
@@ -41,10 +44,13 @@ func TestScrapeCompanyWebsite(t *testing.T) {
 	}
 
 	for i := range tests {
-		email, name := scrapper.ScrapeCompanyWebsite(tests[i].companyLink, tests[i].companyName)
+		t.Run(tests[i].testName, func(t *testing.T) {
 
-		if email != tests[i].companyEmail || name != tests[i].companyName {
-			t.Fatalf("%v: Expected: Email: %v Name: %v, Got: Email: %v Name: %v", tests[i].testName, tests[i].companyEmail, tests[i].companyName, email, name) //nolint
-		}
+			email, name := scrapper.ScrapeCompanyWebsite(tests[i].companyLink, tests[i].companyName)
+
+			if email != tests[i].companyEmail || name != tests[i].companyName {
+				t.Fatalf("%v: Expected: Email: %v Name: %v, Got: Email: %v Name: %v", tests[i].testName, tests[i].companyEmail, tests[i].companyName, email, name) //nolint
+			}
+		})
 	}
 }
