@@ -9,7 +9,7 @@ import (
 
 func main() {
 	collectionMap := make(map[string]string)
-	companies := scrapper.ReadFromFile()
+	companies := scrapper.ReadFromFile("uploadedFiles/company_list-4096951222.txt")
 
 	for i := range companies {
 		if strings.Contains(companies[i], " ") {
