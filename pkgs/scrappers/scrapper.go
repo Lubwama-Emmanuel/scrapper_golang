@@ -13,12 +13,12 @@ import (
 )
 
 // Read company names from file.
-func ReadFromFile() []string {
+func ReadFromFile(fileName string) []string {
 	var companies []string
 
-	f, err := os.Open("uploadedFiles/company_list-4096951222.txt")
+	f, err := os.Open(fileName)
 	if err != nil {
-		errorhandler.HanderError("Failed to open file", err)
+		log.Error("Failed to open file")
 	}
 
 	defer f.Close()
@@ -85,7 +85,6 @@ func ScrapeCompanyWebsite(link, name string) (string, string) {
 		link, _ := s.Attr("href")
 
 		links = append(links, link)
-		log.Info(link)
 	})
 
 	var email string
