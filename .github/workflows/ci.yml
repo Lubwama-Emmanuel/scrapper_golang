@@ -12,15 +12,15 @@ jobs:
     steps:
       - uses: actions/checkout@v2
     # setting up an environment to use golang
-  #   - name: Setup Go
-  #     uses: actions/setup-go@v2
-  #     with:
-  #       go-version: 1.20
-  # # # Install dependencies
-  # - name: Install dependencies
-  #   run: |
-  #     go get github.com/PuerkitoBio/goquery
-  #     go get -u golang.org/x/lint/golint
+      - name: Setup Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.20
+  # # Install dependencies
+      - name: Install dependencies
+        run: |
+          go get github.com/PuerkitoBio/goquery
+          go get -u golang.org/x/lint/golint
   # # Build 
   # - name: Run Build
   #   run: go build
