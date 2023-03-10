@@ -21,12 +21,12 @@ jobs:
         run: |
           go get github.com/PuerkitoBio/goquery
           go get -u golang.org/x/lint/golint
-  # # Build 
-  # - name: Run Build
-  #   run: go build
-  # # Run linter
-  # - name: Run linter on code
-  #   run: golangci-lint run
-  # # Run tests
-  # - name: Testing
-  #   run: gotestsum --format testname
+  # Build 
+      - name: Run Build
+        run: go build
+  # Run linter
+      - name: Run linter on code
+        run: golangci-lint run
+  # Run tests
+      - name: Testing
+        run: gotestsum --format testname
