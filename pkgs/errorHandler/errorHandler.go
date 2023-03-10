@@ -1,9 +1,14 @@
 package errorhandler
 
-import log "github.com/sirupsen/logrus"
+import (
+	"fmt"
 
-func HanderError(m string, err error) {
-	if err != nil {
-		log.Fatal(err)
+	log "github.com/sirupsen/logrus"
+)
+
+func HanderError(incomingErr error) {
+	if incomingErr != nil {
+		err := fmt.Errorf("error occurred: %w", incomingErr)
+		log.Error(err)
 	}
 }
