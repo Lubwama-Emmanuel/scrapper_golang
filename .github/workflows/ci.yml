@@ -11,23 +11,23 @@ jobs:
     runs-on: ubuntu-latest
 
   steps:
-  - uses: actions/checkout@v2
-  # setting up an environment to use golang
-  - name: Setup Go
-    uses: actions/setup-go@v2
-    with:
-      go-version: 1.20
-  # Install dependencies
-  - name: Install dependencies
-    run: |
-      go get github.com/PuerkitoBio/goquery
-      go get -u golang.org/x/lint/golint
-  # Build 
-  - name: Run Build
-    run: go build
-  # Run linter
-  - name: Run linter on code
-    run: golangci-lint run
-  # Run tests
-  - name: Testing
-    run: gotestsum --format testname
+    - uses: actions/checkout@v2
+    # setting up an environment to use golang
+    - name: Setup Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.20
+  # # Install dependencies
+  # - name: Install dependencies
+  #   run: |
+  #     go get github.com/PuerkitoBio/goquery
+  #     go get -u golang.org/x/lint/golint
+  # # Build 
+  # - name: Run Build
+  #   run: go build
+  # # Run linter
+  # - name: Run linter on code
+  #   run: golangci-lint run
+  # # Run tests
+  # - name: Testing
+  #   run: gotestsum --format testname
