@@ -9,8 +9,8 @@ on:
 jobs: 
   build:
     runs-on: ubuntu-latest
-  steps:
-    - uses: actions/checkout@v2
+    steps:
+      - uses: actions/checkout@v2
     # setting up an environment to use golang
   #   - name: Setup Go
   #     uses: actions/setup-go@v2
