@@ -8,7 +8,6 @@ import (
 
 	regexhandler "github.com/Lubwama-Emmanuel/scrapper_golang/pkgs/helpers"
 	"github.com/PuerkitoBio/goquery"
-	log "github.com/sirupsen/logrus"
 )
 
 // Read company names from file.
@@ -61,7 +60,6 @@ func GoogleScrapper(name string) (string, error) {
 		link, _ := s.Attr("href")
 
 		links = append(links, link)
-		log.Info(link)
 
 	})
 
@@ -85,6 +83,7 @@ func GoogleScrapper(name string) (string, error) {
 
 // Scraps the company website for their email.
 func ScrapeCompanyWebsite(link, name string) (string, string, error) {
+
 	resp, httpErr := http.Get(link) //nolint
 	if httpErr != nil {
 		err := fmt.Errorf("an error occurred trying to scrapper company: %v website %w", name, httpErr)

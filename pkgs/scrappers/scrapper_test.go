@@ -27,7 +27,7 @@ func TestReadFromFile(t *testing.T) {
 				fileName: "uploadedFiles/company_list-409695122.txt",
 			},
 			want:    []string{},
-			wantErr: errors.New("an error occurred trying to open the file"),
+			wantErr: errors.New("an error occurred trying to open the file open uploadedFiles/company_list-409695122.txt: no such file or directory"),
 		},
 		{
 			testName: "Correct filename",
