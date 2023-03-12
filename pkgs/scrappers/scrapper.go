@@ -66,12 +66,7 @@ func GoogleScrapper(name string) (string, error) {
 	var companyLink string
 
 	for i := range links {
-		answer, regexErr := regexhandler.MatchCompanyLink(links[i], name)
-		if regexErr != nil {
-			err := fmt.Errorf("failed to match company link %w", regexErr)
-			return "", err
-		}
-
+		answer, _ := regexhandler.MatchCompanyLink(links[i], name)
 		if answer == "" {
 			continue
 		}
@@ -108,11 +103,7 @@ func ScrapeCompanyWebsite(link, name string) (string, string, error) {
 	var email string
 
 	for i := range links {
-		answer, regexErr := regexhandler.MatchEmail(links[i])
-		if regexErr != nil {
-			err := fmt.Errorf("failed to match company email %w", regexErr)
-			return "", "", err
-		}
+		answer, _ := regexhandler.MatchEmail(links[i])
 
 		if answer == "" {
 			continue
