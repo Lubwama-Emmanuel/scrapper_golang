@@ -18,3 +18,6 @@ jobs:
         run: |
          curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $HOME/bin v1.42.1
          export PATH=$PATH:$HOME/bin
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
