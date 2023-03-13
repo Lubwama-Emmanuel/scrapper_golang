@@ -1,6 +1,6 @@
 # Scrapping -Golang
 
-[![codecov](https://codecov.io/gh/Lubwama-Emmanuel/scrapper_golang/branch/main/graph/badge.svg?token=PH5AG8DSO6)](https://codecov.io/gh/Lubwama-Emmanuel/scrapper_golang)
+[![codecov](https://codecov.io/gh/Lubwama-Emmanuel/scrapper_golang/branch/main/graph/badge.svg?token=PH5AG8DSO6)](https://app.codecov.io/gh/Lubwama-Emmanuel/scrapper_golang/tree/introducing-subtest)
 
 
 ## Description
