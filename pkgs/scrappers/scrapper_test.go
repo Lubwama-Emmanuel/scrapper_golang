@@ -32,7 +32,7 @@ func TestReadFromFile(t *testing.T) {
 		{
 			testName: "Correct filename",
 			args: args{
-				fileName: "uploadedFiles/company_list-4096951222.txt",
+				fileName: "../../uploadedFiles/company_list-4096951222.txt",
 			},
 			want:    []string{"codebits", "sunbird", "picfare", "mukwano"},
 			wantErr: nil,
