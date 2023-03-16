@@ -14,7 +14,15 @@ jobs:
           stable: "false"
           go-version: 1.20
 
-      - name: lint
-        run: |
-         curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $HOME/bin v1.42.1
-         export PATH=$PATH:$HOME/bin
+      - name: Install deps
+        run: make deps
+
+      - name: install-ci
+        run: make install-golangci
+
+      - name: run linter
+        run: make lint
+      # - name: lint
+      #   run: |
+      #    curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $HOME/bin v1.42.1
+      #    export PATH=$PATH:$HOME/bin
