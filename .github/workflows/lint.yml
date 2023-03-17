@@ -33,4 +33,4 @@ jobs:
          export PATH=$PATH:/usr/local/bin
 
       - name: linter
-        run: golangci-lint run
+        run: PATH/golangci-lint run
