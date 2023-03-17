@@ -15,7 +15,8 @@ jobs:
       - name: install deps
         run: |
           go mod tidy -compat=1.17
-	        go mod download
+          go mod download
+  
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
