@@ -37,7 +37,7 @@ func TestGetSubString(t *testing.T) {
 				index: []int{},
 			},
 			want:    "",
-			wantErr: errors.New("no index returned"),
+			wantErr: errors.New("no index returned"), //nolint:goerr113
 		},
 		{
 			testName: "Test2",
@@ -46,7 +46,7 @@ func TestGetSubString(t *testing.T) {
 				index: []int{4, 6, 7},
 			},
 			want:    "",
-			wantErr: errors.New("index is out of Range"),
+			wantErr: errors.New("index is out of Range"), //nolint:goerr113
 		},
 	}
 
@@ -69,6 +69,7 @@ func TestGetSubString(t *testing.T) {
 		})
 	}
 }
+
 func TestMatchCompanyLink(t *testing.T) {
 	t.Parallel()
 	type args struct {
@@ -81,7 +82,6 @@ func TestMatchCompanyLink(t *testing.T) {
 		want     string
 		wantErr  error
 	}{
-
 		{
 			testName: "Test link with www",
 			args: args{

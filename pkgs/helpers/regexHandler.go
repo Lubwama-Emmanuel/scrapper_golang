@@ -9,10 +9,10 @@ import (
 // Matches received index and returns the string.
 func GetSubString(s string, index []int) (string, error) {
 	if len(index) == 0 {
-		err := errors.New("no index returned")
+		err := errors.New("no index returned") //nolint:goerr113
 		return "", err
 	} else if len(index) > 2 {
-		err := errors.New("index is out of Range")
+		err := errors.New("index is out of Range") //nolint:goerr113
 		return "", err
 	}
 

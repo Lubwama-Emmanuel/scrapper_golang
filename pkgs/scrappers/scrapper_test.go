@@ -27,7 +27,7 @@ func TestReadFromFile(t *testing.T) {
 				fileName: "uploadedFiles/company_list-409695122.txt",
 			},
 			want:    []string{},
-			wantErr: errors.New("an error occurred trying to open the file open uploadedFiles/company_list-409695122.txt: no such file or directory"),
+			wantErr: errors.New("an error occurred trying to open the file open uploadedFiles/company_list-409695122.txt: no such file or directory"), //nolint:lll
 		},
 		{
 			testName: "Correct filename",
@@ -56,6 +56,7 @@ func TestReadFromFile(t *testing.T) {
 		})
 	}
 }
+
 func TestGoogleScrapper(t *testing.T) {
 	t.Parallel()
 	type args struct {
@@ -101,7 +102,6 @@ func TestGoogleScrapper(t *testing.T) {
 			}
 
 			assert.Equal(t, tests[i].want, got)
-
 		})
 	}
 }
