@@ -7,6 +7,8 @@ on:
 jobs:
   Lint:
     runs-on: ubuntu-latest
+    container:
+      image: docker://golang:latest
     steps:
       - uses: actions/setup-go@v3
         with:
