@@ -109,9 +109,9 @@ func TestGoogleScrapper(t *testing.T) {
 			}))
 			defer testServer.Close()
 
-			searchUrl := testServer.URL + "/search?q=%s"
+			searchURL := testServer.URL + "/search?q=%s"
 
-			got, err := scrapper.GoogleScrapper(searchUrl, tests[i].args.companyName)
+			got, err := scrapper.GoogleScrapper(searchURL, tests[i].args.companyName)
 			if err != nil && tests[i].wantErr == nil {
 				assert.Fail(t, fmt.Sprintf("Error not expected but got one:\n"+"error: %q", err))
 				return
@@ -173,7 +173,6 @@ func TestScrapeCompanyWebsite(t *testing.T) {
 			t.Parallel()
 			testServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 				fmt.Fprintln(w, tests[i].response)
-
 			}))
 			defer testServer.Close()
 			got1, got2, err := scrapper.ScrapeCompanyWebsite(testServer.URL, tests[i].args.companyName)
