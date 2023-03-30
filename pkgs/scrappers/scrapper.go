@@ -37,8 +37,8 @@ func ReadFromFile(fileName string) ([]string, error) {
 }
 
 // Func takes in name of a company and makes a google search the returns link to company website.
-func GoogleScrapper(name string) (string, error) {
-	url := fmt.Sprintf("https://www.google.com/search?q=%s", name)
+func GoogleScrapper(uri, name string) (string, error) {
+	url := fmt.Sprintf(uri, name)
 
 	resp, httpErr := http.Get(url) //nolint
 	if httpErr != nil {
