@@ -64,10 +64,9 @@ func GoogleScrapper(uri, name string) (string, error) {
 
 	for i := range links {
 		answer, _ := regexhandler.MatchCompanyLink(links[i], name)
-		if answer == "" {
-			continue
+		if answer != "" {
+			companyLink = answer
 		}
-		companyLink = answer
 	}
 
 	return companyLink, nil
@@ -99,10 +98,9 @@ func ScrapeCompanyWebsite(link, name string) (string, string, error) {
 	for i := range links {
 		answer, _ := regexhandler.MatchEmail(links[i])
 
-		if answer == "" {
-			continue
+		if answer != "" {
+			email = answer
 		}
-		email = answer
 	}
 
 	return email, name, nil
