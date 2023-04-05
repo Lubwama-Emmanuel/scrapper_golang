@@ -41,20 +41,20 @@ func TestReadFromFile(t *testing.T) {
 		},
 	}
 
-	for i := range tests {
-		i := i // created a local variable and assign the loop variable to it
-		t.Run(tests[i].testName, func(t *testing.T) {
+	for _, tc := range tests {
+		tc := tc // created a local variable and assign the loop variable to it
+		t.Run(tc.testName, func(t *testing.T) {
 			t.Parallel()
-			got, err := scrapper.ReadFromFile(tests[i].args.fileName)
-			if err != nil && tests[i].wantErr == nil {
+			got, err := scrapper.ReadFromFile(tc.args.fileName)
+			if err != nil && tc.wantErr == nil {
 				assert.Fail(t, fmt.Sprintf("Error not expected but got one:\n"+"error: %q", err))
 				return
 			}
-			if tests[i].wantErr != nil {
-				assert.EqualError(t, err, tests[i].wantErr.Error())
+			if tc.wantErr != nil {
+				assert.EqualError(t, err, tc.wantErr.Error())
 				return
 			}
-			assert.Equal(t, tests[i].want, got)
+			assert.Equal(t, tc.want, got)
 		})
 	}
 }
@@ -89,42 +89,60 @@ func TestGoogleScrapper(t *testing.T) {
 			want:    "https://www.mukwano.com",
 			wantErr: nil,
 		},
+		{
+			testName: "500 status code",
+			response: ``,
+			args: args{
+				companyName: "mukwano",
+			},
+			want:    "",
+			wantErr: nil,
+		},
 	}
 
-	for i := range tests {
-		i := i // created a local variable and assign the loop variable to it
+	for _, tc := range tests {
+		tc := tc // created a local variable and assign the loop variable to it
 		// Run subtests
-		t.Run(tests[i].testName, func(t *testing.T) {
+		t.Run(tc.testName, func(t *testing.T) {
 			t.Parallel()
 			// Format the query parameter
-			param := fmt.Sprintf("q=%v", tests[i].args.companyName)
+			param := fmt.Sprintf("q=%v", tc.args.companyName)
 
 			// Create test server for http mocking
-			testServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-				if r.URL.Path == "/search" && r.URL.RawQuery == param {
-					fmt.Fprintln(w, tests[i].response)
-				} else {
-					w.WriteHeader(http.StatusNotFound)
-				}
-			}))
+			testServer := getTestServer(tc.response, param, tc.wantErr)
 			defer testServer.Close()
 
 			searchURL := testServer.URL + "/search?q=%s"
 
-			got, err := scrapper.GoogleScrapper(searchURL, tests[i].args.companyName)
-			if err != nil && tests[i].wantErr == nil {
+			got, err := scrapper.GoogleScrapper(searchURL, tc.args.companyName)
+			if err != nil && tc.wantErr == nil {
 				assert.Fail(t, fmt.Sprintf("Error not expected but got one:\n"+"error: %q", err))
 				return
 			}
 
-			if tests[i].wantErr != nil {
-				assert.EqualError(t, err, tests[i].wantErr.Error())
+			if tc.wantErr != nil {
+				assert.EqualError(t, err, tc.wantErr.Error())
 				return
 			}
 
-			assert.Equal(t, tests[i].want, got)
+			assert.Equal(t, tc.want, got)
 		})
 	}
+}
+
+func getTestServer(response, param string, err error) *httptest.Server {
+	return httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		if r.URL.Path == "/search" && r.URL.RawQuery == param {
+			fmt.Fprintln(w, response)
+		} else {
+			w.WriteHeader(http.StatusNotFound)
+		}
+	}))
 }
 
 func TestScrapeCompanyWebsite(t *testing.T) {
@@ -167,27 +185,27 @@ func TestScrapeCompanyWebsite(t *testing.T) {
 		},
 	}
 
-	for i := range tests {
-		i := i // created a local variable and assign the loop variable to it
-		t.Run(tests[i].testName, func(t *testing.T) {
+	for _, tc := range tests {
+		tc := tc // created a local variable and assign the loop variable to it
+		t.Run(tc.testName, func(t *testing.T) {
 			t.Parallel()
 			testServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-				fmt.Fprintln(w, tests[i].response)
+				fmt.Fprintln(w, tc.response)
 			}))
 			defer testServer.Close()
-			got1, got2, err := scrapper.ScrapeCompanyWebsite(testServer.URL, tests[i].args.companyName)
-			if err != nil && tests[i].wantErr == nil {
+			got1, got2, err := scrapper.ScrapeCompanyWebsite(testServer.URL, tc.args.companyName)
+			if err != nil && tc.wantErr == nil {
 				assert.Fail(t, fmt.Sprintf("Error not expected but got one:\n"+"error: %q", err))
 				return
 			}
 
-			if tests[i].wantErr != nil {
-				assert.EqualError(t, err, tests[i].wantErr.Error())
+			if tc.wantErr != nil {
+				assert.EqualError(t, err, tc.wantErr.Error())
 				return
 			}
 
-			assert.Equal(t, tests[i].want1, got1)
-			assert.Equal(t, tests[i].want2, got2)
+			assert.Equal(t, tc.want1, got1)
+			assert.Equal(t, tc.want2, got2)
 		})
 	}
 }

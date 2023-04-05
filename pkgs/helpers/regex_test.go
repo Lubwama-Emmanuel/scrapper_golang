@@ -50,22 +50,22 @@ func TestGetSubString(t *testing.T) {
 		},
 	}
 
-	for i := range tests {
-		i := i // created a local variable and assign the loop variable to it
-		t.Run(tests[i].testName, func(t *testing.T) {
+	for _, tc := range tests {
+		tc := tc // created a local variable and assign the loop variable to it
+		t.Run(tc.testName, func(t *testing.T) {
 			t.Parallel()
-			got, err := regexhandler.GetSubString(tests[i].args.s, tests[i].args.index)
-			if err != nil && tests[i].wantErr == nil {
+			got, err := regexhandler.GetSubString(tc.args.s, tc.args.index)
+			if err != nil && tc.wantErr == nil {
 				assert.Fail(t, fmt.Sprintf("Error not expected but got one:\n"+"error: %q", err))
 				return
 			}
 
-			if tests[i].wantErr != nil {
-				assert.EqualError(t, err, tests[i].wantErr.Error())
+			if tc.wantErr != nil {
+				assert.EqualError(t, err, tc.wantErr.Error())
 				return
 			}
 
-			assert.Equal(t, tests[i].want, got)
+			assert.Equal(t, tc.want, got)
 		})
 	}
 }
@@ -102,17 +102,17 @@ func TestMatchCompanyLink(t *testing.T) {
 		},
 	}
 
-	for i := range tests {
-		i := i // created a local variable and assign the loop variable to it
-		t.Run(tests[i].testName, func(t *testing.T) {
+	for _, tc := range tests {
+		tc := tc // created a local variable and assign the loop variable to it
+		t.Run(tc.testName, func(t *testing.T) {
 			t.Parallel()
-			got, err := regexhandler.MatchCompanyLink(tests[i].args.link, tests[i].args.companyName)
-			if err != nil && tests[i].wantErr == nil {
+			got, err := regexhandler.MatchCompanyLink(tc.args.link, tc.args.companyName)
+			if err != nil && tc.wantErr == nil {
 				assert.Fail(t, fmt.Sprintf("Error not expected but got one:\n"+"error: %q", err))
 				return
 			}
 
-			assert.Equal(t, tests[i].want, got)
+			assert.Equal(t, tc.want, got)
 		})
 	}
 }
@@ -146,17 +146,17 @@ func TestMatchEmail(t *testing.T) {
 		},
 	}
 
-	for i := range tests {
-		i := i // created a local variable and assign the loop variable to it
-		t.Run(tests[i].testName, func(t *testing.T) {
+	for _, tc := range tests {
+		tc := tc // created a local variable and assign the loop variable to it
+		t.Run(tc.testName, func(t *testing.T) {
 			t.Parallel()
-			got, err := regexhandler.MatchEmail(tests[i].args.link)
-			if err != nil && tests[i].wantErr == nil {
+			got, err := regexhandler.MatchEmail(tc.args.link)
+			if err != nil && tc.wantErr == nil {
 				assert.Fail(t, fmt.Sprintf("Error not expected but got one:\n"+"error: %q", err))
 				return
 			}
 
-			assert.Equal(t, tests[i].want, got)
+			assert.Equal(t, tc.want, got)
 		})
 	}
 }

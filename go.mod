@@ -1,6 +1,6 @@
 module github.com/Lubwama-Emmanuel/scrapper_golang
 
-go 1.20
+go 1.17
 
 require (
 	github.com/PuerkitoBio/goquery v1.8.1
