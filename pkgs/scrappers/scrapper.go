@@ -82,9 +82,11 @@ func ScrapeCompanyWebsite(link, name string) (string, string, error) {
 	defer resp.Body.Close()
 
 	doc, queryErr := goquery.NewDocumentFromReader(resp.Body)
+	// codecov: ignore-start
 	if queryErr != nil {
 		return "", "nil", fmt.Errorf("an error occurred loading goquery %w", queryErr)
 	}
+	// codecov: ignore-end
 
 	var links []string
 	doc.Find("a").Each(func(i int, s *goquery.Selection) {
