@@ -6,19 +6,18 @@ import (
 	"net/http"
 	"os"
 
-	errorhandler "github.com/Lubwama-Emmanuel/scrapper_golang/pkgs/errorHandler"
 	regexhandler "github.com/Lubwama-Emmanuel/scrapper_golang/pkgs/helpers"
 	"github.com/PuerkitoBio/goquery"
-	log "github.com/sirupsen/logrus"
 )
 
 // Read company names from file.
-func ReadFromFile() []string {
+func ReadFromFile(fileName string) ([]string, error) {
 	var companies []string
 
-	f, err := os.Open("uploadedFiles/company_list-4096951222.txt")
-	if err != nil {
-		errorhandler.HanderError("Failed to open file", err)
+	f, fileErr := os.Open(fileName)
+	if fileErr != nil {
+		err := fmt.Errorf("an error occurred trying to open the file %w", fileErr)
+		return nil, err
 	}
 
 	defer f.Close()
@@ -29,24 +28,31 @@ func ReadFromFile() []string {
 		companies = append(companies, scanner.Text())
 	}
 
-	if err := scanner.Err(); err != nil {
-		log.Error(err)
+	if scannerErr := scanner.Err(); scannerErr != nil {
+		err := fmt.Errorf("an error occurred during scanning %w", scannerErr)
+		return nil, err
 	}
 
-	return companies
+	return companies, nil
 }
 
 // Func takes in name of a company and makes a google search the returns link to company website.
-func GoogleScrapper(name string) string {
+func GoogleScrapper(name string) (string, error) {
 	url := fmt.Sprintf("https://www.google.com/search?q=%s", name)
 
-	resp, err := http.Get(url) //nolint
-	errorhandler.HanderError("Error hitting url", err)
+	resp, httpErr := http.Get(url) //nolint
+	if httpErr != nil {
+		err := fmt.Errorf("an error occurred trying to scrapper google for %s %w", name, httpErr)
+		return "", err
+	}
 
 	defer resp.Body.Close()
 
-	doc, err := goquery.NewDocumentFromReader(resp.Body)
-	errorhandler.HanderError("Error reading from goquery", err)
+	doc, queryErr := goquery.NewDocumentFromReader(resp.Body)
+	if queryErr != nil {
+		err := fmt.Errorf("an error occurred loading goquery %w", queryErr)
+		return "", err
+	}
 
 	var links []string
 
@@ -54,49 +60,54 @@ func GoogleScrapper(name string) string {
 		link, _ := s.Attr("href")
 
 		links = append(links, link)
-
 	})
 
 	var companyLink string
 
 	for i := range links {
-		answer := regexhandler.MatchCompanyLink(links[i], name)
-		if answer == "empty" {
+		answer, _ := regexhandler.MatchCompanyLink(links[i], name)
+		if answer == "" {
 			continue
 		}
 		companyLink = answer
 	}
 
-	return companyLink
+	return companyLink, nil
 }
 
 // Scraps the company website for their email.
-func ScrapeCompanyWebsite(link, name string) (string, string) {
-	resp, err := http.Get(link) //nolint
-	errorhandler.HanderError("Error getting hitting company link", err)
+func ScrapeCompanyWebsite(link, name string) (string, string, error) {
+	resp, httpErr := http.Get(link) //nolint
+	if httpErr != nil {
+		err := fmt.Errorf("an error occurred trying to scrapper company: %v website %w", name, httpErr)
+		return "", "nil", err
+	}
 
 	defer resp.Body.Close()
 
-	doc, err := goquery.NewDocumentFromReader(resp.Body)
-	errorhandler.HanderError("Error retrieving File", err)
+	doc, queryErr := goquery.NewDocumentFromReader(resp.Body)
+	if queryErr != nil {
+		err := fmt.Errorf("an error occurred loading goquery %w", queryErr)
+		return "", "nil", err
+	}
 
 	var links []string
 	doc.Find("a").Each(func(i int, s *goquery.Selection) {
 		link, _ := s.Attr("href")
 
 		links = append(links, link)
-		log.Info(link)
 	})
 
 	var email string
 
 	for i := range links {
-		answer := regexhandler.MatchEmail(links[i])
-		if answer == "empty" {
+		answer, _ := regexhandler.MatchEmail(links[i])
+
+		if answer == "" {
 			continue
 		}
 		email = answer
 	}
 
-	return email, name
+	return email, name, nil
 }

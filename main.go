@@ -4,21 +4,33 @@ import (
 	"strings"
 
 	scrapper "github.com/Lubwama-Emmanuel/scrapper_golang/pkgs/scrappers"
-	"github.com/sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 )
 
 func main() {
 	collectionMap := make(map[string]string)
-	companies := scrapper.ReadFromFile()
+
+	companies, err := scrapper.ReadFromFile("uploadedFiles/company_list-4096951222.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	for i := range companies {
 		if strings.Contains(companies[i], " ") {
 			companies[i] = strings.ReplaceAll(companies[i], " ", "")
 		}
-		companyLink := scrapper.GoogleScrapper(companies[i])
-		email, name := scrapper.ScrapeCompanyWebsite(companyLink, companies[i])
+
+		companyLink, err := scrapper.GoogleScrapper(companies[i])
+		if err != nil {
+			log.Error(err)
+		}
+
+		email, name, err := scrapper.ScrapeCompanyWebsite(companyLink, companies[i])
+		if err != nil {
+			log.Error(err)
+		}
 		collectionMap[name] = email
 	}
 
-	logrus.Info(collectionMap)
+	log.Info(collectionMap)
 }

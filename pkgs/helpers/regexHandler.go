@@ -1,25 +1,26 @@
 package regexhandler
 
 import (
+	"errors"
 	"fmt"
 	"regexp"
-
-	log "github.com/sirupsen/logrus"
 )
 
 // Matches received index and returns the string.
-func GetSubString(s string, index []int) string {
+func GetSubString(s string, index []int) (string, error) {
 	if len(index) == 0 {
-		return "empty"
+		err := errors.New("no index returned") //nolint:goerr113
+		return "", err
 	} else if len(index) > 2 {
-		log.Error("Index is out of Range")
+		err := errors.New("index is out of Range") //nolint:goerr113
+		return "", err
 	}
 
-	return s[index[0]:index[1]]
+	return s[index[0]:index[1]], nil
 }
 
 // Matches valid company website link and returns the Link.
-func MatchCompanyLink(link, name string) string {
+func MatchCompanyLink(link, name string) (string, error) {
 	url := fmt.Sprintf(`(https?:\/\/)(www\.)?(%v\.)+[a-z]{2,}`, name)
 	pattern := regexp.MustCompile(url)
 	matchedIndex := pattern.FindStringIndex(link)
@@ -28,7 +29,7 @@ func MatchCompanyLink(link, name string) string {
 }
 
 // Matches valid email address.
-func MatchEmail(link string) string {
+func MatchEmail(link string) (string, error) {
 	pattern := regexp.MustCompile(`[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}`)
 	matchedIndex := pattern.FindStringIndex(link)
 
