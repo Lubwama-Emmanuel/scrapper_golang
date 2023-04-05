@@ -1,7 +1,9 @@
 # Scrapping -Golang
 
-[![codecov](https://codecov.io/gh/Lubwama-Emmanuel/scrapper_golang/branch/introducing-subtest/graph/badge.svg?token=PH5AG8DSO6)](https://app.codecov.io/gh/Lubwama-Emmanuel/scrapper_golang/tree/introducing-subtest)
+<!-- [![codecov](https://codecov.io/gh/Lubwama-Emmanuel/scrapper_golang/branch/introducing-subtest/graph/badge.svg?token=PH5AG8DSO6)](https://app.codecov.io/gh/Lubwama-Emmanuel/scrapper_golang/tree/introducing-subtest) -->
 
+
+[![codecov](https://codecov.io/gh/Lubwama-Emmanuel/scrapper_golang/branch/main/graph/badge.svg?token=PH5AG8DSO6)](https://codecov.io/gh/Lubwama-Emmanuel/scrapper_golang)
 ## Description
 
 The project contains a program that takes in an input from a .txt file containing a list of company names
