@@ -91,7 +91,7 @@ func TestGoogleScrapper(t *testing.T) {
 		},
 		{
 			testName: "500 status code",
-			response: ``,
+			response: `<html><bodyhref="https://www.mukwano.com">Example</a></body></html>`,
 			args: args{
 				companyName: "mukwano",
 			},
@@ -209,37 +209,3 @@ func TestScrapeCompanyWebsite(t *testing.T) {
 		})
 	}
 }
-
-// func TestGoogleScrapper(t *testing.T) {
-// 	// Create a test server that returns a mock response for the search query
-// 	testServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-// 		if r.URL.Path == "/search" && r.URL.RawQuery == "q=test" {
-// 			w.Write([]byte(`<html><body><a href="https://test.com">Example</a></body></html>`))
-// 		} else {
-// 			w.WriteHeader(http.StatusNotFound)
-// 		}
-// 	}))
-// 	defer testServer.Close()
-
-// 	// Set the test server URL for the GoogleScrapper function
-// 	// googleURL := "https://www.google.com/search?q=%s"
-
-// 	// oldURL := googleURL
-// 	// googleURL = testServer.URL + "/search"
-// 	// defer func() { googleURL = oldURL }()
-
-// 	// Call GoogleScrapper with the test query
-// 	companyLink, err := scrapper.GoogleScrapper("test")
-// 	if err != nil {
-// 		t.Errorf("GoogleScrapper returned an error: %v", err)
-// 	}
-
-// 	// Verify that the company link matches the expected value
-// 	expectedLink := "https://test.com"
-// 	if companyLink != expectedLink {
-// 		t.Errorf("GoogleScrapper returned an unexpected company link: got %v, expected %v", companyLink, expectedLink)
-// 	}
-
-// 	// Restore the original Google URL
-// 	// googleURL = oldURL
-// }
