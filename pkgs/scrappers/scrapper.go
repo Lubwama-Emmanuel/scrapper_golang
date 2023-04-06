@@ -16,8 +16,7 @@ func ReadFromFile(fileName string) ([]string, error) {
 
 	f, fileErr := os.Open(fileName)
 	if fileErr != nil {
-		err := fmt.Errorf("an error occurred trying to open the file %w", fileErr)
-		return nil, err
+		return nil, fmt.Errorf("an error occurred trying to open the file %w", fileErr)
 	}
 
 	defer f.Close()
@@ -29,29 +28,28 @@ func ReadFromFile(fileName string) ([]string, error) {
 	}
 
 	if scannerErr := scanner.Err(); scannerErr != nil {
-		err := fmt.Errorf("an error occurred during scanning %w", scannerErr)
-		return nil, err
+		return nil, fmt.Errorf("an error occurred during scanning %w", scannerErr)
 	}
 
 	return companies, nil
 }
 
 // Func takes in name of a company and makes a google search the returns link to company website.
-func GoogleScrapper(name string) (string, error) {
-	url := fmt.Sprintf("https://www.google.com/search?q=%s", name)
+func GoogleScrapper(uri, name string) (string, error) {
+	url := fmt.Sprintf(uri, name)
 
 	resp, httpErr := http.Get(url) //nolint
 	if httpErr != nil {
-		err := fmt.Errorf("an error occurred trying to scrapper google for %s %w", name, httpErr)
-		return "", err
+		return "", fmt.Errorf("an error occurred trying to scrapper google for %s %w", name, httpErr)
 	}
+
+	// TODO: add check for status code
 
 	defer resp.Body.Close()
 
 	doc, queryErr := goquery.NewDocumentFromReader(resp.Body)
 	if queryErr != nil {
-		err := fmt.Errorf("an error occurred loading goquery %w", queryErr)
-		return "", err
+		return "", fmt.Errorf("an error occurred loading goquery %w", queryErr)
 	}
 
 	var links []string
@@ -66,10 +64,9 @@ func GoogleScrapper(name string) (string, error) {
 
 	for i := range links {
 		answer, _ := regexhandler.MatchCompanyLink(links[i], name)
-		if answer == "" {
-			continue
+		if answer != "" {
+			companyLink = answer
 		}
-		companyLink = answer
 	}
 
 	return companyLink, nil
@@ -79,16 +76,15 @@ func GoogleScrapper(name string) (string, error) {
 func ScrapeCompanyWebsite(link, name string) (string, string, error) {
 	resp, httpErr := http.Get(link) //nolint
 	if httpErr != nil {
-		err := fmt.Errorf("an error occurred trying to scrapper company: %v website %w", name, httpErr)
-		return "", "nil", err
+		return "", "nil", fmt.Errorf("an error occurred trying to scrapper company: %v website %w", name, httpErr)
 	}
 
 	defer resp.Body.Close()
 
 	doc, queryErr := goquery.NewDocumentFromReader(resp.Body)
+
 	if queryErr != nil {
-		err := fmt.Errorf("an error occurred loading goquery %w", queryErr)
-		return "", "nil", err
+		return "", "nil", fmt.Errorf("an error occurred loading goquery %w", queryErr)
 	}
 
 	var links []string
@@ -103,10 +99,9 @@ func ScrapeCompanyWebsite(link, name string) (string, string, error) {
 	for i := range links {
 		answer, _ := regexhandler.MatchEmail(links[i])
 
-		if answer == "" {
-			continue
+		if answer != "" {
+			email = answer
 		}
-		email = answer
 	}
 
 	return email, name, nil

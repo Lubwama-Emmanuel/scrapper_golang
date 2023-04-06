@@ -9,6 +9,7 @@ import (
 
 func main() {
 	collectionMap := make(map[string]string)
+	const googleSearchURL = "https://www.google.com/search?q=%s"
 
 	companies, err := scrapper.ReadFromFile("uploadedFiles/company_list-4096951222.txt")
 	if err != nil {
@@ -20,7 +21,7 @@ func main() {
 			companies[i] = strings.ReplaceAll(companies[i], " ", "")
 		}
 
-		companyLink, err := scrapper.GoogleScrapper(companies[i])
+		companyLink, err := scrapper.GoogleScrapper(googleSearchURL, companies[i])
 		if err != nil {
 			log.Error(err)
 		}
